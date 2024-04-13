@@ -1,0 +1,36 @@
+const int sesSensorPin = A0;  
+const int ledPin = 2;       
+
+int esikDeger = 1000;         
+boolean ledDurumu = false;   
+boolean esikAsildi = false;  
+
+void setup() {
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int sesSeviyesi = analogRead(sesSensorPin);
+  esikAsildi = false;  
+
+  if (sesSeviyesi > esikDeger) {
+    delay(200);  
+
+    if (!ledDurumu) {
+      digitalWrite(ledPin, HIGH);
+      ledDurumu = true;
+      Serial.println("LED acildi.");
+    } else {
+      digitalWrite(ledPin, LOW);
+      ledDurumu = false;
+      Serial.println("LED kapatildi.");
+    }
+
+    esikAsildi = true;  
+
+    while (analogRead(sesSensorPin) > esikDeger) {
+      delay(100);
+    }
+  }
+}
